@@ -101,16 +101,26 @@ shipMasses = [
   116072
 ]
 
-const calculateTotalFuel = (masses) => {
-  let totalFuel = 0;
 
-  for (const mass of masses) {
-    let fuel = Math.floor(mass / 3) - 2
-    totalFuel += fuel;
+// RECURSIVE FUNCTION...
+
+const deeperFuel = (fuel, nestedTotal = 0) => {
+  let flooredFuel = Math.floor(fuel / 3) - 2;
+
+  if (flooredFuel > 0) {
+    nestedTotal += flooredFuel;
+    return deeperFuel(flooredFuel, nestedTotal);
   }
-
-  return totalFuel;
+  
+  return nestedTotal;
 }
+
+const calculateTotalFuel = (masses) => {
+
+  let totalFuelAmounts = masses.map(x => deeperFuel(x));
+  return totalFuelAmounts.reduce((a,c) => a + c)
+}
+
 
 console.log('TOTAL FUEL: ', calculateTotalFuel(shipMasses));
 
